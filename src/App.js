@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import {makeStyles} from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import NavBar from "./components/NavBar";
+import Calculator from "./components/Calculator";
 
 function App() {
+  const classes = useStyles();
+
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabChange = (event, newTab) => {
+    setActiveTab(newTab);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+        <NavBar activeValue={activeTab} handleChange={handleTabChange}/>
+        <TabPanel value={activeTab} index={0}>
+          <Calculator/>
+
+        </TabPanel>
+        <TabPanel className={classes.root} value={activeTab} index={1}>
+        </TabPanel>
+      </div>
   );
 }
+
+// From Material-UI dokumentation
+function TabPanel(props) {
+  const {children, value, index, ...other} = props;
+  const classes = useStyles();
+
+  return (
+      <div hidden={value !== index} className={classes.root}
+           {...other}
+      >
+        {value === index && <Box p={3}>{children}</Box>}
+      </div>
+  );
+}
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+
+}));
 
 export default App;
