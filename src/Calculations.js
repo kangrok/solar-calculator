@@ -34,12 +34,12 @@ export default class Calculations {
         return (d === 0 ? "" : d + "d ") + hr + "h " + min + "m " + sec + "s";
     };
 
-    latitudeIsValid(latitude) {
+    latIsValid(latitude) {
         const deg = Array.isArray(latitude) ? this.getDeg(latitude) : latitude;
         return deg >= -90 && deg <= 90;
     };
 
-    longitudeIsValid(longitude) {
+    lngIsValid(longitude) {
         const deg = Array.isArray(longitude) ? this.getDeg(longitude) : longitude;
         return deg >= -180 && deg <= 180;
     };
@@ -49,7 +49,7 @@ export default class Calculations {
     }
 
     stateIsValid(latitude, longitude, date) {
-        return this.latitudeIsValid(latitude) && this.longitudeIsValid(longitude) && this.dateIsValid(date);
+        return this.latIsValid(latitude) && this.lngIsValid(longitude) && this.dateIsValid(date);
     }
 
     toUTC(date) {

@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "@material-ui/pickers": "^3.2.10",
+    "leaflet": "^1.6.0",
+    "react-leaflet": "^2.6.3",
     "sunrise-sunset-js": "^2.1.2"
   }
 }

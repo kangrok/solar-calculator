@@ -13,7 +13,7 @@ export default function CoordinateForm(props) {
     const [coordinateStr, setCoordinateStr] = useState(calc.getDegMinSec(props.coordinate));
 
     const coordinateIsValid = () => {
-        return props.type === "latitude" ? calc.latitudeIsValid(coordinateStr) : calc.longitudeIsValid(coordinateStr);
+        return props.type === "latitude" ? calc.latIsValid(coordinateStr) : calc.lngIsValid(coordinateStr);
     };
 
     const handleCoordinateChange = (i) => (event) => {

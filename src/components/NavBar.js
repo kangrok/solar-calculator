@@ -12,7 +12,7 @@ export default function NavBar(props) {
                 textColor="primary"
                 onChange={props.handleChange}
             >
-                <Tab label="Day Length" />
+                <Tab label="Calculator"/>
                 <Tab label="Graph"/>
             </Tabs>
         </Paper>
