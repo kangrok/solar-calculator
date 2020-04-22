@@ -2,14 +2,12 @@ import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import Calculations from "../Calculations";
 
 export default function DatePicker(props) {
     const classes = useStyles();
-    const calc = new Calculations();
 
     const handleDateChange = (date) => {
-        props.setDate(calc.toUTC(date));
+        props.setDate(date);
     };
 
     return (

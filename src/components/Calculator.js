@@ -12,14 +12,31 @@ export default function Calculator(props) {
     const classes = useStyles();
     const calc = new Calculations();
 
-    const [date, setDate] = useState(calc.toUTC(new Date()));
-    const [sunrise, setSunrise] = useState(calc.getSunrise(props.lat, props.lng, calc.toUTC(new Date())));
-    const [sunset, setSunset] = useState(calc.getSunset(props.lat, props.lng, calc.toUTC(new Date())));
+    const [date, setDate] = useState(new Date());
+    const [sunrise, setSunrise] = useState(calc.getSunrise(props.lat, props.lng, new Date()));
+    const [sunset, setSunset] = useState(calc.getSunset(props.lat, props.lng, new Date()));
+    let inputLat = props.lat;
+    let inputLng = props.lng;
+
+    const setInputLat = (lat) => {
+        inputLat = lat;
+    };
+
+    const setInputLng = (lng) => {
+        inputLng = lng;
+    };
+
+    const handleMapClick = (event) => {
+        props.setLat(event.latlng.lat);
+        props.setLng(event.latlng.lng);
+    };
 
     const setSolarEvents = () => {
-        if (calc.stateIsValid(props.lat, props.lng, date)) {
-            setSunrise(calc.getSunrise(props.lat, props.lng, date));
-            setSunset(calc.getSunset(props.lat, props.lng, date));
+        if (calc.stateIsValid(inputLat, inputLng, date)) {
+            props.setLat(inputLat);
+            props.setLng(inputLng);
+            setSunrise(calc.getSunrise(inputLat, inputLng, date));
+            setSunset(calc.getSunset(inputLat, inputLng, date));
         }
     };
 
@@ -27,24 +44,31 @@ export default function Calculator(props) {
         <div className={classes.root}>
             <Paper className={classes.calculator}>
                 <div className={classes.form}>
-                    <CoordinateForm type="latitude" coordinate={props.lat} setCoordinate={props.setLat}/>
-                    <CoordinateForm type="longitude" coordinate={props.lng} setCoordinate={props.setLng}/>
+                    <CoordinateForm
+                        type="latitude"
+                        coordinate={props.lat}
+                        setCoordinate={setInputLat}
+                        isValid={calc.latIsValid}
+                    />
+                    <CoordinateForm
+                        type="longitude"
+                        coordinate={props.lng}
+                        setCoordinate={setInputLng}
+                        isValid={calc.lngIsValid}
+                    />
                     <DatePicker date={date} label="Date" setDate={setDate}/>
                     <Button variant="contained" color="primary" onClick={setSolarEvents} style={{width: "150px"}}>
                         Calculate
                     </Button>
                 </div>
                 <div className={classes.result}>
-                    <Typography variant="h5" paragraph={true}>Sunrise: {sunrise.toLocaleString()}</Typography>
-                    <Typography variant="h5" paragraph={true}>Sunset: {sunset.toLocaleString()}</Typography>
+                    <Typography variant="h5" paragraph={true}>Sunrise: {sunrise.toUTCString()}</Typography>
+                    <Typography variant="h5" paragraph={true}>Sunset: {sunset.toUTCString()}</Typography>
                     <Typography variant="h5">Length of day: {calc.getDayLengthString(sunrise, sunset)}</Typography>
                 </div>
             </Paper>
             <Paper className={classes.map}>
-                <LocationPicker
-                    lat={props.lat} lng={props.lng}
-                    setLat={props.setLat} setLng={props.setLng}
-                />
+                <LocationPicker lat={props.lat} lng={props.lng} handleMapClick={handleMapClick}/>
             </Paper>
         </div>
     );
@@ -62,7 +86,7 @@ const useStyles = makeStyles(() => ({
         flexWrap: 'wrap',
         alignItems: 'center',
         padding: '3ch 5ch 3ch 5ch',
-        width: '35vw'
+        width: '40vw'
     },
     form: {
         display: 'flex',
@@ -80,7 +104,7 @@ const useStyles = makeStyles(() => ({
         flexDirection: "column",
         justifyContent: "space-between",
         margin: "2vh 0 2vh 0",
-        width: "20vw",
+        width: "25vw",
     },
     map: {
         width: '55vw',

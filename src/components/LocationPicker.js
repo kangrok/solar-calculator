@@ -11,7 +11,7 @@ export default function LocationPicker(props) {
     };
 
     return (
-        <Map center={[30, 0]} zoom={1.5}>
+        <Map center={[30, 0]} zoom={1.5} onClick={props.handleMapClick}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

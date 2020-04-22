@@ -1,4 +1,4 @@
-import {getSunrise, getSunset} from "sunrise-sunset-js";
+import {getTimes, getPosition} from "suncalc"
 
 export default class Calculations {
 
@@ -52,32 +52,70 @@ export default class Calculations {
         return this.latIsValid(latitude) && this.lngIsValid(longitude) && this.dateIsValid(date);
     }
 
-    toUTC(date) {
-        return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(),
-            date.getUTCMinutes(), date.getUTCSeconds()));
-    }
-
     getSunrise(latitude, longitude, date) {
-        return this.toUTC(getSunrise(latitude, longitude, date));
+        return getTimes(date, latitude, longitude,).sunrise;
     }
 
     getSunset(latitude, longitude, date) {
-        const sunrise = this.getSunrise(latitude, longitude, date);
-        let sunset = this.toUTC(getSunset(latitude, longitude, date));
-
-        // If sunset occurs on next day.
-        let d = this.toUTC(date);
-        if (sunset < sunrise) {
-            sunset = this.toUTC(getSunset(latitude, longitude, new Date(d.setDate(d.getDate() + 1))));
-        }
-        return sunset;
+        return getTimes(date, latitude, longitude).sunset;
     }
 
-    getDayLength(sunrise, sunset) {
+    getDayLength(lat, lng, date) {
+        const sunrise = this.getSunrise(lat, lng, date);
+        const sunset = this.getSunset(lat, lng, date);
         return Math.abs(sunset - sunrise);
     }
 
     getDayLengthString(sunrise, sunset) {
-        return this.formatDayLength(this.getDayLength(sunrise, sunset))
+        return this.formatDayLength(Math.abs(sunset-sunrise));
+    }
+
+    msToHrs(ms) {
+        return (ms / 1000 / 60 / 60) % 24;
+    }
+
+    getPolarDayLength(lat, lng, date) {
+        const times = getTimes(date, lat, lng);
+        const d = new Date(date);
+
+        // Currently classify edge cases as either polar day or polar night.
+        // If there is a sunrise and next day is a polar event, then this is the start of a polar day.
+        // Otherwise if there is a sunrise and next day is not a polar event, then it is the end of a polar night.
+        if (times.sunrise.toString() !== "Invalid Date") {
+            if (isNaN(this.getDayLength(lat, lng, new Date(d.setDate(d.getDate() + 1))))) {
+                return 24;
+            }
+            return 0;
+        } else if (times.sunset.toString() !== "Invalid Date") {
+            if (isNaN(this.getDayLength(lat, lng, new Date(d.setDate(d.getDate() + 1))))) {
+                return 0
+            }
+            return 24;
+        }
+        return getPosition(d, lat, lng).altitude >= 0 ? 24 : 0;
+    }
+
+    getGraphDayLength(lat, lng, date) {
+        let dayLength = this.msToHrs(this.getDayLength(lat, lng, date));
+        if (isNaN(dayLength)) {
+            dayLength = this.getPolarDayLength(lat, lng, date);
+        }
+        return dayLength;
+    }
+
+    getChartData(date1, date2, lat, lng) {
+        let data = new Map();
+        data.set("labels", []);
+        data.set("data", []);
+        let d = new Date(date1);
+        while (d <= date2) {
+            data.get("labels").push(new Date(d));
+            data.get("data").push({
+                x: new Date(d),
+                y: this.getGraphDayLength(lat, lng, d),
+            });
+            d = new Date(d.setDate(d.getDate() + 1));
+        }
+        return data;
     }
 }
