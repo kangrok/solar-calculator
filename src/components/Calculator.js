@@ -40,6 +40,32 @@ export default function Calculator(props) {
         }
     };
 
+    const generateResult = () => {
+        const dayLength = calc.getGraphDayLength(inputLat, inputLng, date);
+        if (dayLength > 0 && dayLength < 24) {
+            return (
+                <>
+                    <Typography variant="h5" paragraph={true}>Sunrise: {sunrise.toUTCString()}</Typography>
+                    <Typography variant="h5" paragraph={true}>Sunset: {sunset.toUTCString()}</Typography>
+                    <Typography variant="h5">Length of day: {calc.getDayLengthString(sunrise, sunset)}</Typography>
+                </>
+            );
+        } else {
+            const polarEvent = dayLength === 24 ? "day" : "night";
+            return (
+                <Typography variant="h5" paragraph={true}>
+                    {"This is a "}
+                    <a href={polarEvent === "day"
+                        ? "https://en.wikipedia.org/wiki/Midnight_sun"
+                        : "https://en.wikipedia.org/wiki/Polar_night"}>
+                        {"polar " + polarEvent}
+                    </a>
+                    {". Note that there is no sunrise or sunset on this date."}
+                </Typography>
+            );
+        }
+    };
+
     return (
         <div className={classes.root}>
             <Paper className={classes.calculator}>
@@ -62,9 +88,7 @@ export default function Calculator(props) {
                     </Button>
                 </div>
                 <div className={classes.result}>
-                    <Typography variant="h5" paragraph={true}>Sunrise: {sunrise.toUTCString()}</Typography>
-                    <Typography variant="h5" paragraph={true}>Sunset: {sunset.toUTCString()}</Typography>
-                    <Typography variant="h5">Length of day: {calc.getDayLengthString(sunrise, sunset)}</Typography>
+                    {generateResult()}
                 </div>
             </Paper>
             <Paper className={classes.map}>

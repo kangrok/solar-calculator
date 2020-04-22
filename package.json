@@ -23,7 +23,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -42,8 +44,11 @@
   },
   "devDependencies": {
     "@material-ui/pickers": "^3.2.10",
+    "gh-pages": "^2.2.0",
     "leaflet": "^1.6.0",
     "react-leaflet": "^2.6.3",
     "sunrise-sunset-js": "^2.1.2"
-  }
+  },
+
+  "homepage": "https://kangrok.github.io/solar-calculator"
 }
