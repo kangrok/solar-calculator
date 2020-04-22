@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/solar-calculator/static/css/main.81975396.chunk.css",
+    "main.js": "/solar-calculator/static/js/main.10bea9e3.chunk.js",
+    "main.js.map": "/solar-calculator/static/js/main.10bea9e3.chunk.js.map",
+    "runtime-main.js": "/solar-calculator/static/js/runtime-main.a36794cb.js",
+    "runtime-main.js.map": "/solar-calculator/static/js/runtime-main.a36794cb.js.map",
+    "static/js/2.1b59b977.chunk.js": "/solar-calculator/static/js/2.1b59b977.chunk.js",
+    "static/js/2.1b59b977.chunk.js.map": "/solar-calculator/static/js/2.1b59b977.chunk.js.map",
+    "index.html": "/solar-calculator/index.html",
+    "precache-manifest.1d3662c3ca7afe061bfaeeda2a2a3f91.js": "/solar-calculator/precache-manifest.1d3662c3ca7afe061bfaeeda2a2a3f91.js",
+    "service-worker.js": "/solar-calculator/service-worker.js",
+    "static/css/main.81975396.chunk.css.map": "/solar-calculator/static/css/main.81975396.chunk.css.map",
+    "static/js/2.1b59b977.chunk.js.LICENSE.txt": "/solar-calculator/static/js/2.1b59b977.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a36794cb.js",
+    "static/js/2.1b59b977.chunk.js",
+    "static/css/main.81975396.chunk.css",
+    "static/js/main.10bea9e3.chunk.js"
+  ]
+}
